@@ -37,7 +37,7 @@ class UserLoginRequest extends FormRequest
     public function messages()
     {
         return [
-            'email.required' => 'L\' :attirbute és obligatòria',
+            'email.required' => 'L\':attribute és obligatòria',
             'password.required' => 'La :attribute és obligatòria',
             'password.min' => 'La :attribute ha de contenir, com a mínim, :min caràcters'
         ];
