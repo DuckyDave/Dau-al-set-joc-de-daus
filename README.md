@@ -1,64 +1,53 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Laravel API REST
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Objectiu: crear una API completa amb control d'accés configurat amb tokens.
 
-## About Laravel
+## Nivell 1
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- El joc de daus es juga amb dos daus. En cas que el resultat dels dos daus sigui 7, la partida és guanyada, sinó és perduda. Per poder jugar al joc prèviament has d'estar registrat com a usuari a l'aplicació amb un email únic i un nickname que no s'ha de repetir entre usuaris o si es prefereix, pot no afegir cap nom i es dirà “Anònim” per defecte. Hi pot haver més d'un jugador anònim. En crear un nou usuari, se us assigna un identificador únic i una data de registre.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Cada jugador pot veure un llistat de tots els tirades que ha realitzat, amb el valor de cada dau i si s'ha guanyat o no la partida. A més, podeu saber el seu percentatge d'èxit per totes les tirades que ha realitzat.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- No es pot eliminar una tirada en concret, però sí que es pot eliminar tot el llistat de tirades per un jugador.
 
-## Learning Laravel
+- El programari ha de permetre a l'administrador de l'aplicació visualitzar tots els jugadors que hi ha al sistema, veure el percentatge d'èxit de cada jugador i el percentatge d'èxit mitjà de tots els jugadors al sistema.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- El programari ha de respectar els principals patrons de disseny.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## Laravel Sponsors
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### Afegix seguretat
 
-### Premium Partners
+- Inclou autenticació per passport en tots els accessos a les URL del microservei.
+Defineix sistema de rols i bloqueja l'accés a les diferents rutes segons el seu nivell de privilegis.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
 
-## Contributing
+### Testing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- Crea els tests unitaris d'integració en l'aplicació. Treballaràs aplicant TDD a l'aplicació per provar cadascuna de les rutes.
+ 
 
-## Code of Conduct
+### NOTES
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- Has de tindre en compte els següents detalls de construcció:
 
-## Security Vulnerabilities
+### URL’s:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## License
+- POST /players : crea un jugador
+- PUT /players/{id} : modifica el nom del jugador
+- POST /players/{id}/games/ : un jugador específic realitza una tirada dels daus.
+- DELETE /players/{id}/games: elimina les tirades del jugador
+- GET /players: retorna el llistat de tots els jugadors del sistema amb el seu percentatge mig d’èxits 
+- GET /players/{id}/games: retorna el llistat de jugades per un jugador.
+- GET /players/ranking: retorna el ranking mig de tots els jugadors del sistema. És a dir, el percentatge mig d’èxits.
+- GET /players/ranking/loser: retorna el jugador amb pitjor percentatge d’èxit
+- GET /players/ranking/winner: retorna el jugador amb pitjor percentatge d’èxit.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Nivell 2
+
+- Crea una aplicació frontal amb AJAX per consumir les dades de les diferents rutes. Si vols pots fer-la mitjançant un framework: Angular, Vue, React…
+- Soluciona el CORS, en cas d'aparèixer en establir la comunicació entre front i back.
+
+## Nivell 3
+- Desplega el teu projecte en producció.
