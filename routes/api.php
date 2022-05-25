@@ -30,3 +30,5 @@ Route::post('players', function() {
 })->name('api.players.store');
 // Modifica el nom d'un jugador determinat
 Route::put('players/{id}', [PlayerController::class, 'update'])->name('api.players.update');
+// Un jugador específic realitza una tirada de daus
+Route::post('players/{id}/games', [PlayerGameController::class, 'store'])->name('api.playerGame.store');
