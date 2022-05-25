@@ -28,3 +28,5 @@ Route::post('register', [UserAuthController::class, 'register'])->name('user.reg
 Route::post('players', function() {
     return redirect()->route('user.register');
 })->name('api.players.store');
+// Modifica el nom d'un jugador determinat
+Route::put('players/{id}', [PlayerController::class, 'update'])->name('api.players.update');
