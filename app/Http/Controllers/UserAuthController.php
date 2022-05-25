@@ -11,6 +11,7 @@ class UserAuthController extends Controller
 {
     /**
      * Login request
+     *
      */
     public function login(UserLoginRequest $request)
     {
@@ -31,6 +32,7 @@ class UserAuthController extends Controller
 
     /**
      * Register request
+     *
      */
     public function register(UserRegisterRequest $request)
     {
