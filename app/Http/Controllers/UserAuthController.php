@@ -53,4 +53,18 @@ class UserAuthController extends Controller
             'token' => $token,
         ], 200);
     }
+
+    /**
+     * Logout request
+     * 
+     */
+    public function logout(Request $request)
+    {
+        $request->user()->token()->revoke();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Usuari registrat ha sortit correctament',
+        ], 200);
+    }
 }
