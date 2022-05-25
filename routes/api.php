@@ -34,5 +34,7 @@ Route::post('players', function() {
 Route::put('players/{id}', [PlayerController::class, 'update'])->name('api.players.update');
 // Un jugador específic realitza una tirada de daus
 Route::post('players/{id}/games', [PlayerGameController::class, 'store'])->name('api.playerGame.store');
+// Un jugador específic llista TOTS els seus jocs (TOTES les seves tiradescde daus)
+Route::get('players/{id}/games', [PlayerGameController::class, 'show'])->name('api.playerGame.show');
 // Un jugador específic elimina TOTS els seus jocs (TOTES les seves tirades de daus)
 Route::delete('players/{id}/games', [PlayerGameController::class, 'destroy'])->name('api.playerGame.destroy');

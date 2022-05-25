@@ -65,7 +65,21 @@ class PlayerGameController extends Controller
      */
     public function show($id)
     {
-        //
+        if(auth('api')->user()->id === $id) {
+            $player_games = User::find($id)->games()
+                            ->select('game_result')->get();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Tirades de daus realitzades fins ara',
+                'data' => $player_games,
+            ], 200);
+        } else {
+            return response()->json([
+                'sucess' => false,
+                'error' => 'Usuari no registrat.',
+            ], 401);
+        }
     }
 
     /**
