@@ -14,7 +14,7 @@ class UserAuthController extends Controller
      */
     public function login(UserLoginRequest $request)
     {
-        if(auth('api')->attempt(['email' => $request->email, 'password' => $request->password])) {
+        if(auth()->attempt(['email' => $request->email, 'password' => $request->password])) {
             $token = auth()->user()->createToken('DAU AL SET Joc de daus Personal Access Client')->accessToken;
             return response()->json([
                 'success' => true,
