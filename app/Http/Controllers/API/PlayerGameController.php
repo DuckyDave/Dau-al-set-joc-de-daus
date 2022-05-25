@@ -88,6 +88,18 @@ class PlayerGameController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if(auth('api')->user()->id === $id) {
+            Game::destroy($id);
+
+            return response()->json([
+                'sucess' => true,
+                'message' => 'Has eliminat TOTES les tirades de daus que has realitzat fins ara'
+            ], 200);
+        } else {
+            return response()->json([
+                'sucess' => false,
+                'error' => 'Usuari no registrat.',
+            ], 401);
+        }
     }
 }

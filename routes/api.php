@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserAuthController;
+use App\Http\Controllers\API\PlayerController;
+use App\Http\Controllers\API\PlayerGameController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,3 +34,5 @@ Route::post('players', function() {
 Route::put('players/{id}', [PlayerController::class, 'update'])->name('api.players.update');
 // Un jugador específic realitza una tirada de daus
 Route::post('players/{id}/games', [PlayerGameController::class, 'store'])->name('api.playerGame.store');
+// Un jugador específic elimina TOTS els seus jocs (TOTES les seves tirades de daus)
+Route::delete('players/{id}/games', [PlayerGameController::class, 'destroy'])->name('api.playerGame.destroy');
