@@ -27,7 +27,7 @@ class PlayerGameController extends Controller
      */
     public function store(Request $request)
     {
-        if(auth('api')->user()->id === $request->id) {
+        if(auth('api')->user()) {
             $player_game = new Game;
         
             $player_game->user_id = $request->id;
@@ -51,8 +51,11 @@ class PlayerGameController extends Controller
             ], 201);
         } else {
             return response()->json([
-                'sucess' => false,
-                'error' => 'Usuari no registrat.',
+                'success' => false,
+                'error' => 'No existeix cap usuari registrat amb aquestes '
+                . 'credencials (adreça de correu electrònic i contrasenya)',
+                'message' => 'Per realitzar una tirada de daus, has d\'estar'
+                . ' registrat prèviament i entrar amb les teves credencials'
             ], 401);
         }
     }
@@ -65,7 +68,7 @@ class PlayerGameController extends Controller
      */
     public function show($id)
     {
-        if(auth('api')->user()->id === $id) {
+        if(auth('api')->user()) {
             $player_games = User::find($id)->games()
                             ->select('game_result')->get();
 
@@ -76,8 +79,12 @@ class PlayerGameController extends Controller
             ], 200);
         } else {
             return response()->json([
-                'sucess' => false,
-                'error' => 'Usuari no registrat.',
+                'success' => false,
+                'error' => 'No existeix cap usuari registrat amb aquestes '
+                . 'credencials (adreça de correu electrònic i contrasenya)',
+                'message' => 'Per veure una llista amb totes les tirades de'
+                . ' daus que has realitzat fins ara, has de estar registrat'
+                . ' prèviament i entrar amb les teves credencials',
             ], 401);
         }
     }
@@ -102,7 +109,7 @@ class PlayerGameController extends Controller
      */
     public function destroy($id)
     {
-        if(auth('api')->user()->id === $id) {
+        if(auth('api')->user()) {
             Game::destroy($id);
 
             return response()->json([
@@ -111,8 +118,12 @@ class PlayerGameController extends Controller
             ], 200);
         } else {
             return response()->json([
-                'sucess' => false,
-                'error' => 'Usuari no registrat.',
+                'success' => false,
+                'error' => 'No existeix cap usuari registrat amb aquestes '
+                . 'credencials (adreça de correu electrònic i contrasenya)',
+                'message' => 'Per eliminar TOTES les tirades de daus'
+                . ' que has realitzat fins ara, has de estar registrat'
+                . ' prèviament i entrar amb les teves credencials',
             ], 401);
         }
     }
