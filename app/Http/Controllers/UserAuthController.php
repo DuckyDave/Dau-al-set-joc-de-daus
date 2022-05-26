@@ -18,13 +18,15 @@ class UserAuthController extends Controller
             $token = auth()->user()->createToken('DAU AL SET Joc de daus Personal Access Client')->accessToken;
             return response()->json([
                 'success' => true,
-                'message' => 'Usuari registrat ha entrat correctament',
+                'message' => 'Usuari, has entrat correctament, pots continuar',
                 'token' => $token,
             ], 200);
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Usuari no registrat',
+                'error' => 'No existeix cap usuari registrat amb aquestes '
+                . 'credencials (adreça de correu electrònic i contrasenya)',
+                'message' => 'Per entrar, has de estar registrat prèviament',
             ], 401);
         }
     }
@@ -49,7 +51,7 @@ class UserAuthController extends Controller
 
         return response()->json([
             'sucess' => true,
-            'message' => 'Usuari registrat correctament',
+            'message' => 'Nou usuari registrat correctament',
             'token' => $token,
         ], 200);
     }
@@ -60,11 +62,11 @@ class UserAuthController extends Controller
      */
     public function logout(Request $request)
     {
-        $request->user()->token()->revoke();
+        auth('api')->user()->token()->revoke();
 
         return response()->json([
             'success' => true,
-            'message' => 'Usuari registrat ha sortit correctament',
+            'message' => 'Usuari, has sortit correctament',
         ], 200);
     }
 }
