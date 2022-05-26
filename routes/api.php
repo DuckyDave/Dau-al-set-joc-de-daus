@@ -17,10 +17,6 @@ use App\Http\Controllers\API\PlayerGameController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 // Un usuari específic vol entrar (login)
 Route::post('login', [UserAuthController::class, 'login'])->name('user.login');
 // una persona vol registar-se com a usuari per poder jugar
