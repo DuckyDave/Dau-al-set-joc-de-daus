@@ -66,10 +66,7 @@ class PlayerController extends Controller
             return response()->json([
                 'success' => false,
                 'error' => 'Accés denegat',
-                'message' => 'Per modificar el nom d\'un jugador, has de estar'
-                . ' registrat prèviament i entrar amb les teves credencials'
-                . ' (adreça de correu electrònic i contrasenya) per generar un'
-                . ' token vàlid',
+                'message' => 'Per modificar el nom d\'un jugador, has d\'entrar amb les teves credencials (adreça de correu electrònic i contrasenya) per generar un token d\'accés vàlid',
             ], 401);
         }
     }

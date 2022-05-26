@@ -56,10 +56,7 @@ class PlayerGameController extends Controller
             return response()->json([
                 'success' => false,
                 'error' => 'Accés denegat',
-                'message' => 'Per realitzar una tirada de daus, has d\'estar'
-                . ' registrat prèviament, i/o entrar amb les teves credencials'
-                . '(adreça de correu electrònic i contrasenya) per generar un'
-                . ' token vàlid'
+                'message' => 'Per realitzar una tirada de daus, has d\'entrar amb les teves credencials (adreça de correu electrònic i contrasenya) per generar un token d\'accés vàlid'
             ], 401);
         }
     }
@@ -88,11 +85,7 @@ class PlayerGameController extends Controller
             return response()->json([
                 'success' => false,
                 'error' => 'Accés denegat',
-                'message' => 'Per veure una llista amb totes les tirades de'
-                . ' daus que has realitzat fins ara, has d\'estar registrat'
-                . ' prèviament i/o entrar amb les teves credencials (adreça de'
-                . ' correu electrònic i contrasenya( per generar un token'
-                . ' vàlid',
+                'message' => 'Per veure una llista amb totes les tirades de daus que has realitzat fins ara, has d\'entrar amb les teves credencials (adreça de correu electrònic i contrasenya( per generar un token d\'accés vàlid',
             ], 401);
         }
     }
@@ -132,10 +125,7 @@ class PlayerGameController extends Controller
             return response()->json([
                 'success' => false,
                 'error' => 'Accés denegat',
-                'message' => 'Per eliminar TOTES les tirades de daus que has'
-                . ' realitzat fins ara, has de estar registrat prèviament i'
-                . ' entrar amb les teves credencials (adreça de correu'
-                . ' electrònic i contrasenya) per generar un token vàlid',
+                'message' => 'Per eliminar TOTES les tirades de daus que has realitzat fins ara, has d\'entrar amb les teves credencials (adreça de correu electrònic i contrasenya) per generar un token d\'accés vàlid',
             ], 401);
         }
     }
