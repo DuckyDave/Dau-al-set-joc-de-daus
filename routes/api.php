@@ -26,17 +26,20 @@ Route::post('login', [UserAuthController::class, 'login'])->name('user.login');
 // una persona vol registar-se com a usuari per poder jugar
 Route::post('register', [UserAuthController::class, 'register'])->name('user.register');
 
-// Un usuari específic vol sortir (logout)
-Route::post('logout', [UserAuthController::class, 'logout'])->name('user.logout');
-// Crea un jugador nou: redirigeix cap a ruta per registrar-se, ja que totes dues accions són la mateixa
-Route::post('players', function() {
-    return redirect()->route('user.register');
-})->name('api.players.store');
-// Modifica el nom d'un jugador determinat
-Route::put('players/{id}', [PlayerController::class, 'update'])->name('api.players.update');
-// Un jugador específic realitza una tirada de daus
-Route::post('players/{id}/games', [PlayerGameController::class, 'store'])->name('api.playerGame.store');
-// Un jugador específic llista TOTS els seus jocs (TOTES les seves tiradescde daus)
-Route::get('players/{id}/games', [PlayerGameController::class, 'show'])->name('api.playerGame.show');
-// Un jugador específic elimina TOTS els seus jocs (TOTES les seves tirades de daus)
-Route::delete('players/{id}/games', [PlayerGameController::class, 'destroy'])->name('api.playerGame.destroy');
+Route::middleware('auth:api')->group(function () {
+    // Un usuari específic vol sortir (logout)
+    Route::post('logout', [UserAuthController::class, 'logout'])->name('user.logout');
+    // Crea un jugador nou: redirigeix cap a ruta per registrar-se, ja que totes dues accions són la mateixa
+    Route::post('players', function() {
+        return redirect()->route('user.register');
+    })->name('api.players.store');
+    // Modifica el nom d'un jugador determinat
+    Route::put('players/{id}', [PlayerController::class, 'update'])->name('api.players.update');
+    // Un jugador específic realitza una tirada de daus
+    Route::post('players/{id}/games', [PlayerGameController::class, 'store'])->name('api.playerGame.store');
+    // Un jugador específic llista TOTS els seus jocs (TOTES les seves tiradescde daus)
+    Route::get('players/{id}/games', [PlayerGameController::class, 'show'])->name('api.playerGame.show');
+    // Un jugador específic elimina TOTS els seus jocs (TOTES les seves tirades de daus)
+    Route::delete('players/{id}/games', [PlayerGameController::class, 'destroy'])->name('api.playerGame.destroy');
+});
+
