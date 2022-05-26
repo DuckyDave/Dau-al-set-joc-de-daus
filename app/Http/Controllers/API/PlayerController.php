@@ -49,7 +49,7 @@ class PlayerController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        if(auth('api')->user()->id == $request->id) {
+        if(auth('api')->user()) {
             $user = User::find($request->id);
 
             ($request->nick_name) ? $user->nick_name = $request->nick_name
@@ -62,7 +62,13 @@ class PlayerController extends Controller
                 'message' => 'Nom del jugador: ' . $user->nick_name,
             ], 200);
         } else {
-            return response('Usuari no registrat', 401);
+            return response()->json([
+                'success' => false,
+                'error' => 'No existeix cap usuari registrat amb aquestes '
+                . 'credencials (adreça de correu electrònic i contrasenya)',
+                'message' => 'Per modificar el nom d\'un jugador, has de estar'
+                . ' registrat prèviament i entrar amb les teves credencials',
+            ], 401);
         }
     }
 
