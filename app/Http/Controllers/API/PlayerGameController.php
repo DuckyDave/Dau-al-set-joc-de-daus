@@ -27,7 +27,8 @@ class PlayerGameController extends Controller
      */
     public function store(Request $request)
     {
-        if(auth('api')->user()) {
+        if(auth('api')->user()->id == $request->id) {
+
             $player_game = new Game;
         
             $player_game->user_id = $request->id;
@@ -52,10 +53,11 @@ class PlayerGameController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'error' => 'No existeix cap usuari registrat amb aquestes '
-                . 'credencials (adreça de correu electrònic i contrasenya)',
+                'error' => 'Accés denegat',
                 'message' => 'Per realitzar una tirada de daus, has d\'estar'
-                . ' registrat prèviament i entrar amb les teves credencials'
+                . ' registrat prèviament, entrar amb les teves credencials'
+                . '(adreça de correu electrònic i contrasenya) per generar un'
+                . ' token vàlid'
             ], 401);
         }
     }
@@ -68,7 +70,8 @@ class PlayerGameController extends Controller
      */
     public function show($id)
     {
-        if(auth('api')->user()) {
+        if(auth('api')->user()->id == $id) {
+
             $player_games = User::find($id)->games()
                             ->select('game_result')->get();
 
@@ -80,11 +83,12 @@ class PlayerGameController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'error' => 'No existeix cap usuari registrat amb aquestes '
-                . 'credencials (adreça de correu electrònic i contrasenya)',
+                'error' => 'Accés denegat',
                 'message' => 'Per veure una llista amb totes les tirades de'
-                . ' daus que has realitzat fins ara, has de estar registrat'
-                . ' prèviament i entrar amb les teves credencials',
+                . ' daus que has realitzat fins ara, has d\'estar registrat'
+                . ' prèviament i entrar amb les teves credencials (adreça de'
+                . ' correu electrònic i contrasenya( per generar un token'
+                . ' vàlid',
             ], 401);
         }
     }
@@ -109,21 +113,23 @@ class PlayerGameController extends Controller
      */
     public function destroy($id)
     {
-        if(auth('api')->user()) {
-            Game::destroy($id);
+        if(auth('api')->user()->id == $id) {
+
+            Game::where('user_id', $id)->delete();
 
             return response()->json([
                 'sucess' => true,
-                'message' => 'Has eliminat TOTES les tirades de daus que has realitzat fins ara'
+                'message' => 'Has eliminat TOTES les tirades de daus que'
+                . ' has realitzat fins ara'
             ], 200);
         } else {
             return response()->json([
                 'success' => false,
-                'error' => 'No existeix cap usuari registrat amb aquestes '
-                . 'credencials (adreça de correu electrònic i contrasenya)',
-                'message' => 'Per eliminar TOTES les tirades de daus'
-                . ' que has realitzat fins ara, has de estar registrat'
-                . ' prèviament i entrar amb les teves credencials',
+                'error' => 'Accés denegat',
+                'message' => 'Per eliminar TOTES les tirades de daus que has'
+                . ' realitzat fins ara, has de estar registrat prèviament i'
+                . ' entrar amb les teves credencials (adreça de correu'
+                . ' electrònic i contrasenya) per generar un token vàlid',
             ], 401);
         }
     }
