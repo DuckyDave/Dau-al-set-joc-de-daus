@@ -22,9 +22,11 @@ Route::post('login', [UserAuthController::class, 'login'])->name('user.login');
 // una persona vol registar-se com a usuari per poder jugar
 Route::post('register', [UserAuthController::class, 'register'])->name('user.register');
 
+// Un usuari específic vol sortir (logout)
+Route::post('logout', [UserAuthController::class, 'logout'])->middleware('auth:api')->name('user.logout');
+
+// Rutes per a usuaris amb rol de jugador
 Route::middleware('auth:api')->group(function () {
-    // Un usuari específic vol sortir (logout)
-    Route::post('logout', [UserAuthController::class, 'logout'])->name('user.logout');
     // Crea un jugador nou: redirigeix cap a ruta per registrar-se, ja que totes dues accions són la mateixa
     Route::post('players', function() {
         return redirect()->route('user.register');
@@ -39,3 +41,8 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('players/{id}/games', [PlayerGameController::class, 'destroy'])->name('api.playerGame.destroy');
 });
 
+// Rutes per a usuaris amb rol d'administrador
+Route::middleware('auth:api')->group(function () {
+    // Un administrador vol veure la llista de jugadors registrats al sistema
+    Route::get('players', [PlayerController::class, 'index'])->name('api.players.index');
+});
