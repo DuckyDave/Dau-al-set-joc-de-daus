@@ -29,6 +29,8 @@ class PlayerGameController extends Controller
     {
         if(auth('api')->user()->id == $request->id) {
 
+            $nick_name = auth()->user()->nick_name;
+
             $player_game = new Game;
         
             $player_game->user_id = $request->id;
@@ -47,7 +49,7 @@ class PlayerGameController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Resultat de la tirada de daus',
+                'message' => 'Resultat de la tirada de daus, ' . $nick_name,
                 'data' => $player_game->game_result,
             ], 201);
         } else {
@@ -55,7 +57,7 @@ class PlayerGameController extends Controller
                 'success' => false,
                 'error' => 'Accés denegat',
                 'message' => 'Per realitzar una tirada de daus, has d\'estar'
-                . ' registrat prèviament, entrar amb les teves credencials'
+                . ' registrat prèviament, i/o entrar amb les teves credencials'
                 . '(adreça de correu electrònic i contrasenya) per generar un'
                 . ' token vàlid'
             ], 401);
@@ -72,12 +74,14 @@ class PlayerGameController extends Controller
     {
         if(auth('api')->user()->id == $id) {
 
+            $nick_name = auth()->user()->nick_name;
+
             $player_games = User::find($id)->games()
                             ->select('game_result')->get();
 
             return response()->json([
                 'success' => true,
-                'message' => 'Tirades de daus realitzades fins ara',
+                'message' => 'Tirades de daus fins ara, ' . $nick_name,
                 'data' => $player_games,
             ], 200);
         } else {
@@ -86,7 +90,7 @@ class PlayerGameController extends Controller
                 'error' => 'Accés denegat',
                 'message' => 'Per veure una llista amb totes les tirades de'
                 . ' daus que has realitzat fins ara, has d\'estar registrat'
-                . ' prèviament i entrar amb les teves credencials (adreça de'
+                . ' prèviament i/o entrar amb les teves credencials (adreça de'
                 . ' correu electrònic i contrasenya( per generar un token'
                 . ' vàlid',
             ], 401);
@@ -115,11 +119,13 @@ class PlayerGameController extends Controller
     {
         if(auth('api')->user()->id == $id) {
 
+            $nick_name = auth()->user()->nick_name;
+
             Game::where('user_id', $id)->delete();
 
             return response()->json([
                 'sucess' => true,
-                'message' => 'Has eliminat TOTES les tirades de daus que'
+                'message' => $nick_name . ', has eliminat TOTES les tirades de daus que'
                 . ' has realitzat fins ara'
             ], 200);
         } else {

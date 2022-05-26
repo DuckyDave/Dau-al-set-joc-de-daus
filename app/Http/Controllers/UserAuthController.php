@@ -15,10 +15,13 @@ class UserAuthController extends Controller
     public function login(UserLoginRequest $request)
     {
         if(auth()->attempt(['email' => $request->email, 'password' => $request->password])) {
+            
             $token = auth()->user()->createToken('DAU AL SET Joc de daus Personal Access Client')->accessToken;
+            
+            $nick_name = auth()->user()->nick_name;
             return response()->json([
                 'success' => true,
-                'message' => 'Usuari, has entrat correctament, pots continuar',
+                'message' => $nick_name . ', has entrat correctament, pots continuar',
                 'token' => $token,
             ], 200);
         } else {
@@ -51,7 +54,10 @@ class UserAuthController extends Controller
 
         return response()->json([
             'sucess' => true,
-            'message' => 'Nou usuari registrat correctament',
+            'message' => 'Nou usuari '. $user->nick_name . ', registrat'
+            . ' correctament. Per continuar, has d\'entrar amb les teves'
+            . ' credencials (adreça de correu electrònic i contrasenya)'
+            . ' per generar un token vàlid',
             'token' => $token,
         ], 200);
     }
@@ -62,11 +68,15 @@ class UserAuthController extends Controller
      */
     public function logout(Request $request)
     {
-        auth('api')->user()->token()->revoke();
+        $nick_name = auth()->user()->nick_name;
+
+        $token = auth('api')->user()->token();
+        
+        $token->revoke();
 
         return response()->json([
             'success' => true,
-            'message' => 'Usuari, has sortit correctament',
+            'message' => $nick_name . ', has sortit correctament',
         ], 200);
     }
 }
