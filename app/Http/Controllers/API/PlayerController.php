@@ -15,21 +15,7 @@ class PlayerController extends Controller
      */
     public function index()
     {
-        if(auth('api')->user()->token()) {
-            $player_list = User::select('id','nick_name', 'created_at')->get();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Jugadors reigstrats',
-                'data' => $player_list,
-            ], 200);
-        } else {
-            return response()->json([
-                'success' => false,
-                'error' => 'Accés denegat',
-                'message' => 'Per veure una llista amb tots els jugadors registrats, has d\'entrar amb les teves credencials (adreça de correu electrònic i contrasenya) per generar un token d\'accés vàlid',
-            ], 401);
-        }
+        //
     }
 
     /**
