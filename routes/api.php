@@ -45,11 +45,11 @@ Route::middleware('auth:api')->group(function () {
 // Rutes per a usuaris amb rol d'administrador
 Route::middleware('auth:api')->group(function () {
     // Un administrador específic vol veure la llista de jugadors registrats amb els seus percentages d'èxit
-    Route::get('players', [PlayerController::class, 'index'])->name('api.players.index');
+    Route::get('players', [PlayerRankingController::class, 'index'])->name('api.playersRanking.index');
     // Un administrador específic vol veure la llista dels jugadors registrats i el percentage mitjà d'exit
-    Route::get('players/ranking', [PlayerRankingController::class, 'show_average'])->name('api.players.ranking');
+    Route::get('players/ranking', [PlayerRankingController::class, 'show_average'])->name('api.playersRanking.average');
     // Un administrador específic vol veure la informació jugador amb el pitjor percentage d'exit
-    Route::get('players/ranking/loser', [PlayerRankingController::class, 'show_loser'])->name('api.players.loser');
+    Route::get('players/ranking/loser', [PlayerRankingController::class, 'show_loser'])->name('api.playersRanking.loser');
     // Un administrador específic vol veure la informació del jugador amb el millor percentage d'exit
-    Route::get('players/ranking/winner', [PlayerRankingController::class, 'show_winner'])->name('api.players.winner');
+    Route::get('players/ranking/winner', [PlayerRankingController::class, 'show_winner'])->name('api.playersRanking.winner');
 });
