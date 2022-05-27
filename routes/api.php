@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserAuthController;
 use App\Http\Controllers\API\PlayerController;
 use App\Http\Controllers\API\PlayerGameController;
+use App\Http\Controllers\API\PlayerRankingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +44,12 @@ Route::middleware('auth:api')->group(function () {
 
 // Rutes per a usuaris amb rol d'administrador
 Route::middleware('auth:api')->group(function () {
-    // Un administrador vol veure la llista de jugadors registrats al sistema
+    // Un administrador específic vol veure la llista de jugadors registrats amb els seus percentages d'èxit
     Route::get('players', [PlayerController::class, 'index'])->name('api.players.index');
+    // Un administrador específic vol veure la llista dels jugadors registrats i el percentage mitjà d'exit
+    Route::get('players/ranking', [PlayerRankingController::class, 'show_average'])->name('api.players.ranking');
+    // Un administrador específic vol veure la informació jugador amb el pitjor percentage d'exit
+    Route::get('players/ranking/loser', [PlayerRankingController::class, 'show_loser'])->name('api.players.loser');
+    // Un administrador específic vol veure la informació del jugador amb el millor percentage d'exit
+    Route::get('players/ranking/winner', [PlayerRankingController::class, 'show_winner'])->name('api.players.winner');
 });
