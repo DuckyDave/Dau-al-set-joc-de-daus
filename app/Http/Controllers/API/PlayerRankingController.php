@@ -52,12 +52,13 @@ class PlayerRankingController extends Controller
 
     public function show_loser()
     {
+        // obtenim el jugador registrat amb el pitjor percentatge d'èxit
         if(auth('api')->user()) {
             
             return response()->json([
                 'success' => true,
                 'message' => 'jugador registrat amb el pitjor percentatge d\'èxit',
-                //'data' => 
+                'data' => PlayerRankingInfo::loser(),
             ], 200);
         } else {
             return response()->json([
@@ -70,12 +71,13 @@ class PlayerRankingController extends Controller
 
     public function show_winner()
     {
+        // obtenim el jugador registrat amb el millor percentatge d'èxit
         if(auth('api')->user()) {
             
             return response()->json([
                 'success' => true,
                 'message' => 'jugador registrat amb el millor percentatge d\'èxit',
-                //'data' => 
+                'data' => PlayerRankingInfo::winner(),
             ], 200);
         } else {
             return response()->json([
@@ -93,31 +95,42 @@ class PlayerRankingController extends Controller
  */
 class PlayerRankingInfo
 {
-    public string $nickName;
+    public string $nick_name;
     public float $percentage;
 
-    public function __construct($nickName, $percentage)
+    public function __construct($nick_name, $percentage)
     {
-        $this->nickName = $nickName;
+        $this->nick_name = $nick_name;
         $this->percentage = $percentage;
     }
 
     public function loser()
-    {
-           // rànquing amb nickname i percentatge èxit jugador
-        //$ranking = $this->players_ranking();
-        // array amb nicknames
-        //$players = User::get('nick_name');
-        /*$nick_names = [];
-        foreach ($players as $player) {
-            $nick_names[] = $player->nick_name;
-        }*/
+    {   
+        // obtenim rànquing amb nickname i percentatge èxit jugadors
+        $ranking = self::players_ranking();
+        // ordenem aquesta array associatiu en sentit descendent, comparant els percentages d'èxit
+        usort($ranking, 'self::sort_descending');
+        // finalment, retornem la info del darrer element de l'array ordenada
+        return end($ranking)->nick_name;
     }
 
     public function winner()
     {
-        //$ranking = $this->players_ranking();
-        //var_dump ($ranking);
+        // obtenim rànquing amb nickname i percentatge èxit jugadors
+        $ranking = self::players_ranking();
+        // ordenem aquesta array associatiu en sentit descendent, comparant els percentages d'èxit
+        usort($ranking, 'self::sort_descending');
+        // finalment, retornem la informació del primer element de l'array ordenada
+        return reset($ranking)->nick_name;
+    }
+
+    // comparem percentages d'èxit a dins del rànquing de jugadors registrats
+    public function sort_descending($value1, $value2)
+    {
+        // si els dos valors són iguals, retorna 0
+        if($value1->percentage == $value2->percentage) return 0;
+        // si el valor1 és menor que el valor2, retorna 1, en cas contrari, retorna -1
+        return ($value1->percentage < $value2->percentage) ? 1 : -1;
     }
 
     // obtenim el rànquing de jugadors registrats
