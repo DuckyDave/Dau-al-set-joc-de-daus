@@ -18,15 +18,20 @@ use App\Http\Controllers\API\PlayerRankingController;
 |
 */
 
-// Un usuari específic vol entrar (login)
-Route::post('login', [UserAuthController::class, 'login'])->name('user.login');
-// una persona vol registar-se com a usuari per poder jugar
-Route::post('register', [UserAuthController::class, 'register'])->name('user.register');
+// Rutes sense middleware
+// Entrar (login) amb el rol de jugador (player)
+Route::post('players/login', [UserAuthController::class, 'playerLogin'])->name('players.login');
+// Registar-se (register) com a jugador (player)
+Route::post('players/register', [UserAuthController::class, 'playerRegister'])->name('players.register');
+// Entrar (login) amb el rol d'administrador (admin)
+Route::post('login', [UserAuthController::class, 'adminLogin'])->name('admin.login');
+// Registar-se (register) com a administrador (admin)
+Route::post('register', [UserAuthController::class, 'adminRegister'])->name('admin.register');
 
-// Un usuari específic vol sortir (logout)
-Route::post('logout', [UserAuthController::class, 'logout'])->middleware('auth:api')->name('user.logout');
+// ruta per sortir (logout)
+Route::post('logout', [UserAuthController::class, 'logout'])->middleware('auth:api')->name('logout');
 
-// Rutes per a usuaris amb rol de jugador
+// Rutes per a usuaris registrats amb el rol de jugador
 Route::middleware('auth:api')->group(function () {
     // Modifica el nom d'un jugador determinat
     Route::put('players/{id}', [PlayerController::class, 'update'])->name('api.players.update');
@@ -38,7 +43,7 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('players/{id}/games', [PlayerGameController::class, 'destroy'])->name('api.playerGame.destroy');
 });
 
-// Rutes per a usuaris amb rol d'administrador
+// Rutes per a usuaris registats amb el rol d'administrador
 Route::middleware('auth:api')->group(function () {
     // Un adminsitrador específic crea un jugador nou
     Route::post('players', [PlayerController::class, 'store'])->name('api.players.store');
