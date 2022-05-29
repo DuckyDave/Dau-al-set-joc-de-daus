@@ -26,7 +26,35 @@ class PlayerController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        //
+        if(auth('api')->user()) {
+            $user = new User;
+
+            ($request->nick_name) ? $user->nick_name = $request->nick_name 
+            : $user->nick_name = 'anònim';
+
+            $user->email = $request->email;
+
+            $user->password = bcrypt($request->password);
+                
+            $user->save();
+
+            $token = $user->createToken('DAU AL SET Joc de daus Personal Access Token')->accessToken;
+
+            return response()->json([
+                'sucess' => true,
+                'message' => 'Nou usuari '. $user->nick_name . ', registrat'
+                . ' correctament. Per continuar, has d\'entrar amb les teves'
+                . ' credencials (adreça de correu electrònic i contrasenya)'
+                . ' per generar un token vàlid',
+                'token' => $token,
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'error' => 'Accés denegat',
+                'message' => 'Per modificar el nom d\'un jugador, has d\'entrar amb les teves credencials (adreça de correu electrònic i contrasenya) per generar un token d\'accés vàlid',
+            ], 401);
+        }
     }
 
     /**
