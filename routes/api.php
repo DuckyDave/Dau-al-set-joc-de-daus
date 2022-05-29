@@ -28,10 +28,6 @@ Route::post('logout', [UserAuthController::class, 'logout'])->middleware('auth:a
 
 // Rutes per a usuaris amb rol de jugador
 Route::middleware('auth:api')->group(function () {
-    // Crea un jugador nou: redirigeix cap a ruta per registrar-se, ja que totes dues accions són la mateixa
-    Route::post('players', function() {
-        return redirect()->route('user.register');
-    })->name('api.players.store');
     // Modifica el nom d'un jugador determinat
     Route::put('players/{id}', [PlayerController::class, 'update'])->name('api.players.update');
     // Un jugador específic realitza una tirada de daus
@@ -44,6 +40,8 @@ Route::middleware('auth:api')->group(function () {
 
 // Rutes per a usuaris amb rol d'administrador
 Route::middleware('auth:api')->group(function () {
+    // Un adminsitrador específic crea un jugador nou
+    Route::post('players', [PlayerController::class, 'store'])->name('api.players.store');
     // Un administrador específic vol veure la llista de jugadors registrats amb els seus percentages d'èxit
     Route::get('players', [PlayerRankingController::class, 'index'])->name('api.playersRanking.index');
     // Un administrador específic vol veure la llista dels jugadors registrats i el percentage mitjà d'exit
