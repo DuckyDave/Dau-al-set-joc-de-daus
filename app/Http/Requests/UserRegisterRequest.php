@@ -36,6 +36,7 @@ class UserRegisterRequest extends FormRequest
     public function messages()
     {
         return [
+            'nick_name.string' => 'El :attribute ha de ser una cadena de caràcters',
             'nick_name.max' => 'El :attribute no pot contenir més de :max caràcters',
             'email.required' => 'L\':attribute és obligatòria',
             'password.required' => 'La :attribute és obligatòria',
