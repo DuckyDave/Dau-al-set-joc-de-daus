@@ -50,7 +50,7 @@ class UserAuthController extends Controller
             
         $user->save();
 
-        //$user->assignRole('player');
+        $user->assignRole('player');
 
         $token = $user->createToken('DAU AL SET Joc de daus Personal Access Token')->accessToken;
 
@@ -105,7 +105,7 @@ class UserAuthController extends Controller
             
         $user->save();
 
-        //$user->assignRole('admin');
+        $user->assignRole('admin');
 
         $token = $user->createToken('DAU AL SET Joc de daus Personal Access Token')->accessToken;
 
