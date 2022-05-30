@@ -8,7 +8,6 @@ use App\Http\Requests\UserRegisterRequest;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
 
-
 class UserAuthController extends Controller
 {
     /**
