@@ -9,6 +9,14 @@ use App\Models\Game;
 
 class PlayerGameController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('role:player');
+        $this->middleware('can:store game')->only('store');
+        $this->middleware('can:show game')->only('show');
+        $this->middleware('can:delete game')->only('destroy');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -25,9 +33,9 @@ class PlayerGameController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request )
     {
-        if(auth('api')->user()->id == $request->id) {
+        if((auth('api')->user()->id == $request->id) && (autt('api')->user()->hasRole('player'))) {
 
             $nick_name = auth()->user()->nick_name;
 
@@ -69,7 +77,7 @@ class PlayerGameController extends Controller
      */
     public function show($id)
     {
-        if(auth('api')->user()->id == $id) {
+        if((auth('api')->user()->id == $request->id) && (autt('api')->user()->hasRole('player'))) {
 
             $nick_name = auth()->user()->nick_name;
 
@@ -110,7 +118,7 @@ class PlayerGameController extends Controller
      */
     public function destroy($id)
     {
-        if(auth('api')->user()->id == $id) {
+        if((auth('api')->user()->id == $request->id) && (autt('api')->user()->hasRole('player'))) {
 
             $nick_name = auth()->user()->nick_name;
 
