@@ -11,8 +11,8 @@ class PlayerController extends Controller
 {
     public function __construct() 
     {
-        $this->middleware('role:player');
-        $this->middleware('role:adininstrator');
+        //$this->middleware('role:player');
+        //$this->middleware('role:adininstrator');
         $this->middleware('can:create player')->only('store');
         $this->middleware('can:update player nickname')->only('update');
     }
@@ -35,7 +35,7 @@ class PlayerController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        if(auth('api')->user() && autt('api')->user()->hasRole('administrator')) {
+        if(auth('api')->user() && auth('api')->user()->hasRole('administrator')) {
 
             $user = new User;
 
@@ -87,7 +87,7 @@ class PlayerController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        if((auth('api')->user()->id == $request->id) && (autt('api')->user()->hasRole('player'))) {
+        if((auth('api')->user()->id == $request->id) && (auth('api')->user()->hasRole('player'))) {
 
             $user = User::find($request->id);
 
