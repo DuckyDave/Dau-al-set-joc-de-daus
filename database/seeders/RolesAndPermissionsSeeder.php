@@ -33,7 +33,7 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['guard_name' => 'api', 'name' => 'show players ranking average'])->assignRole('administrator');
         Permission::create(['guard_name' => 'api', 'name' => 'show players ranking loser'])->assignRole('administrator');
         Permission::create(['guard_name' => 'api', 'name' => 'show players ranking winner'])->assignRole('administrator');
-
+        /*
         // fake admininistrators
         $admin1 = User::create([
             'nick_name' => 'admin1',
@@ -50,6 +50,6 @@ class RolesAndPermissionsSeeder extends Seeder
         // five fake players
        User::factory(5)->create()->each(function($user) {
            $user->assignRole('player');
-       });
+       });*/
     }
 }
