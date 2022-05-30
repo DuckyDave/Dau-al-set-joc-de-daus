@@ -3,11 +3,20 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 
 class PlayerController extends Controller
 {
+    public function __construct() 
+    {
+        $this->middleware('role:player');
+        $this->middleware('role:adininstrator');
+        $this->middleware('can:create player')->only('store');
+        $this->middleware('can:update player nickname')->only('update');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -26,7 +35,8 @@ class PlayerController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        if(auth('api')->user()) {
+        if(auth('api')->user() && autt('api')->user()->hasRole('administrator')) {
+
             $user = new User;
 
             ($request->nick_name) ? $user->nick_name = $request->nick_name 
@@ -77,7 +87,7 @@ class PlayerController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        if(auth('api')->user()->id == $request->id) {
+        if((auth('api')->user()->id == $request->id) && (autt('api')->user()->hasRole('player'))) {
 
             $user = User::find($request->id);
 
