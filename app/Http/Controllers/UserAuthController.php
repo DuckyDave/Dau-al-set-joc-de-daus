@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserRegisterRequest;
 use App\Models\User;
+use Spatie\Permission\Models\Role;
+
 
 class UserAuthController extends Controller
 {
@@ -105,7 +107,7 @@ class UserAuthController extends Controller
             
         $user->save();
 
-        $user->assignRole('admin');
+        $user->assignRole('administrator');
 
         $token = $user->createToken('DAU AL SET Joc de daus Personal Access Token')->accessToken;
 
