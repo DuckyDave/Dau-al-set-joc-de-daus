@@ -18,21 +18,25 @@ use App\Http\Controllers\API\PlayerRankingController;
 |
 */
 
-// Rutes sense middleware
-// Entrar (login) amb el rol de jugador (player)
-Route::post('players/login', [UserAuthController::class, 'playerLogin'])->name('players.login');
-// Registar-se (register) com a jugador (player)
-Route::post('players/register', [UserAuthController::class, 'playerRegister'])->name('players.register');
-// Entrar (login) amb el rol d'administrador (admin)
-Route::post('admin/login', [UserAuthController::class, 'adminLogin'])->name('admin.login');
-// Registar-se (register) com a administrador (admin)
-Route::post('admin/register', [UserAuthController::class, 'adminRegister'])->name('admin.register');
+Route::group(['prefix' => 'admin'], function() {
+    // Entrar (login) amb el rol d'administrador (admin)
+    Route::post('/login', [UserAuthController::class, 'adminLogin'])->name('admin.login');
+    // Registar-se (register) com a administrador (admin)
+    Route::post('/register', [UserAuthController::class, 'adminRegister'])->name('admin.register');
+});
+
+Route::group(['prefix' => 'players'], function() {
+    // Entrar (login) amb el rol de jugador (player)
+    Route::post('/login', [UserAuthController::class, 'playerLogin'])->name('players.login');
+    // Registar-se (register) com a jugador (player)
+    Route::post('/register', [UserAuthController::class, 'playerRegister'])->name('players.register');
+});
 
 // ruta per sortir (logout)
 Route::post('logout', [UserAuthController::class, 'logout'])->middleware(['auth:api'])->name('logout');
 
 // Rutes per a usuaris registrats amb el rol de jugador
-Route::middleware(['auth:api','role:player'])->group(function () {
+Route::middleware(['auth:api'])->group(function () {
     // Modifica el nom d'un jugador determinat
     Route::put('players/{id}', [PlayerController::class, 'update'])->name('api.players.update');
     // Un jugador específic realitza una tirada de daus
@@ -44,7 +48,7 @@ Route::middleware(['auth:api','role:player'])->group(function () {
 });
 
 // Rutes per a usuaris registats amb el rol d'administrador
-Route::middleware(['auth:api','role:admin'])->group(function () {
+Route::middleware(['auth:api'])->group(function () {
     // Un adminsitrador específic crea un jugador nou
     Route::post('players', [PlayerController::class, 'store'])->name('api.players.store');
     // Un administrador específic vol veure la llista de jugadors registrats amb els seus percentages d'èxit
