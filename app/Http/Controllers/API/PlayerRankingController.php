@@ -184,7 +184,7 @@ class PlayerRankingInfo
         return $percentage;
     }
 
-    // obtenim el rànking mitjà
+    // obtenim el percentage mitjà d'èxit
     public function average_ranking()
     {
         // desa el nombre total de tirades de daus amb èxit
@@ -192,11 +192,12 @@ class PlayerRankingInfo
         // desa el nombre total de tirades de daus
         $total_games = Game::count('id');
         // calcula el percentage mitjà d'èxit
-        $average_total_ranking = ($total_games_win / $total_games) * 100;
+        if($total_games == 0) {
+            $average_percentage = 0;
+        } else {
+            $average_percentage = ($total_games_win / $total_games) * 100;
+        }
         // finalment, el retorna
-        return $average_total_ranking;
+        return $average_percentage;
     }
 }
-
-
-
