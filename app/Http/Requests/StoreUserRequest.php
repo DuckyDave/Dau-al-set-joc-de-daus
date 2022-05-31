@@ -24,7 +24,7 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'nick_name' => 'bail|string|max:20',
+            'nick_name' => 'string|max:20',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8',
         ];
@@ -37,8 +37,9 @@ class StoreUserRequest extends FormRequest
     public function messages()
     {
         return [
+            'nick_name.string' => 'El :attribute ha de ser una cadena de caràcters',
             'nick_name.max' => 'El :attribute no pot contenir més de :max caràcters',
-            'email.required' => 'L\' :attirbute és obligatòria',
+            'email.required' => 'L\':attribute és obligatòria',
             'password.required' => 'La :attribute és obligatòria',
             'password.min' => 'La :attribute ha de contenir, com a mínim, :min caràcters'
         ];

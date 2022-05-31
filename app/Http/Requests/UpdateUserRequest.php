@@ -24,7 +24,7 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'nick_name' => 'bail|string|max:20',
+            'nick_name' => 'string|max:20',
         ];
     }
 
@@ -34,6 +34,7 @@ class UpdateUserRequest extends FormRequest
     public function messages()
     {
         return [
+            'nick_name.string' => 'El :attribute ha de ser una cadena de craàcters',
             'nick_name.max' => 'El :attribute no pot contenir més de :max caràcters',
         ];
     }
