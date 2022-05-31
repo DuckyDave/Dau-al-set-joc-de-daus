@@ -11,10 +11,9 @@ class PlayerGameController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:player');
         $this->middleware('can:store game')->only('store');
-        $this->middleware('can:show game')->only('show');
-        $this->middleware('can:delete game')->only('destroy');
+        $this->middleware('can:show all games')->only('show');
+        $this->middleware('can:delete all games')->only('destroy');
     }
 
     /**
@@ -35,7 +34,7 @@ class PlayerGameController extends Controller
      */
     public function store(Request $request )
     {
-        if((auth('api')->user()->id == $request->id) && (autt('api')->user()->hasRole('player'))) {
+        if((auth('api')->user()->id == $request->id) && (auth('api')->user()->can('store game'))) {
 
             $nick_name = auth()->user()->nick_name;
 
@@ -77,7 +76,7 @@ class PlayerGameController extends Controller
      */
     public function show($id)
     {
-        if((auth('api')->user()->id == $request->id) && (autt('api')->user()->hasRole('player'))) {
+        if((auth('api')->user()->id == $request->id) && (auth('api')->user()->can('show all games'))) {
 
             $nick_name = auth()->user()->nick_name;
 
@@ -118,7 +117,7 @@ class PlayerGameController extends Controller
      */
     public function destroy($id)
     {
-        if((auth('api')->user()->id == $request->id) && (autt('api')->user()->hasRole('player'))) {
+        if((auth('api')->user()->id == $request->id) && (auth('api')->user()->can('delete all games'))) {
 
             $nick_name = auth()->user()->nick_name;
 
