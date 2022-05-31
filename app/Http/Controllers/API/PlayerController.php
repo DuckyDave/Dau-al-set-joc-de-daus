@@ -11,8 +11,6 @@ class PlayerController extends Controller
 {
     public function __construct() 
     {
-        //$this->middleware('role:player');
-        //$this->middleware('role:adininstrator');
         $this->middleware('can:create player')->only('store');
         $this->middleware('can:update player nickname')->only('update');
     }
@@ -35,7 +33,7 @@ class PlayerController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        if(auth('api')->user() && auth('api')->user()->hasRole('administrator')) {
+        if(auth('api')->user() && auth('api')->user()->can('create player')) {
 
             $user = new User;
 
@@ -48,11 +46,14 @@ class PlayerController extends Controller
                 
             $user->save();
 
+            $user->assignRole('player');
+            $user->removeRole('administrator');
+
             $token = $user->createToken('DAU AL SET Joc de daus Personal Access Token')->accessToken;
 
             return response()->json([
                 'sucess' => true,
-                'message' => 'Nou usuari '. $user->nick_name . ', registrat'
+                'message' => 'Nou jugador '. $user->nick_name . ', registrat'
                 . ' correctament. Per continuar, has d\'entrar amb les teves'
                 . ' credencials (adreça de correu electrònic i contrasenya)'
                 . ' per generar un token vàlid',
@@ -87,7 +88,7 @@ class PlayerController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        if((auth('api')->user()->id == $request->id) && (auth('api')->user()->hasRole('player'))) {
+        if((auth('api')->user()->id == $request->id) && (auth('api')->user()->can('update player nickname'))) {
 
             $user = User::find($request->id);
 
