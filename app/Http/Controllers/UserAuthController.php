@@ -28,7 +28,7 @@ class UserAuthController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'error' => 'No existeix cap usuari registrat amb aquestes '
+                'error' => 'No existeix cap jugador registrat amb aquestes '
                 . 'credencials (adreça de correu electrònic i contrasenya)',
                 'message' => 'Per entrar, has de estar registrat prèviament',
             ], 401);
@@ -52,17 +52,18 @@ class UserAuthController extends Controller
         $user->save();
 
         $user->assignRole('player');
+        $user->removeRole('administrator');
 
         $token = $user->createToken('DAU AL SET Joc de daus Personal Access Token')->accessToken;
 
         return response()->json([
             'sucess' => true,
-            'message' => 'Nou usuari '. $user->nick_name . ', registrat'
+            'message' => 'Nou jugador '. $user->nick_name . ', registrat'
             . ' correctament. Per continuar, has d\'entrar amb les teves'
             . ' credencials (adreça de correu electrònic i contrasenya)'
             . ' per generar un token vàlid',
             'token' => $token,
-        ], 200);
+        ], 201);
     }
 
     /**
@@ -83,7 +84,7 @@ class UserAuthController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'error' => 'No existeix cap usuari registrat amb aquestes '
+                'error' => 'No existeix cap administrador registrat amb aquestes '
                 . 'credencials (adreça de correu electrònic i contrasenya)',
                 'message' => 'Per entrar, has de estar registrat prèviament',
             ], 401);
@@ -107,17 +108,18 @@ class UserAuthController extends Controller
         $user->save();
 
         $user->assignRole('administrator');
+        $user->removeRole('player');
 
         $token = $user->createToken('DAU AL SET Joc de daus Personal Access Token')->accessToken;
 
         return response()->json([
             'sucess' => true,
-            'message' => 'Nou usuari '. $user->nick_name . ', registrat'
+            'message' => 'Nou administrador '. $user->nick_name . ', registrat'
             . ' correctament. Per continuar, has d\'entrar amb les teves'
             . ' credencials (adreça de correu electrònic i contrasenya)'
             . ' per generar un token vàlid',
             'token' => $token,
-        ], 200);
+        ], 201);
     }
 
     /**
