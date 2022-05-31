@@ -11,7 +11,6 @@ class PlayerRankingController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:administrator');
         $this->middleware('can:list players ranking')->only('index');
         $this->middleware('can:show players ranking average')->only('show_average');
         $this->middleware('can:show players ranking loser')->only('show_loser');
@@ -19,7 +18,7 @@ class PlayerRankingController extends Controller
     }
     public function index()
     {
-        if(auth('api')->user() && auth('api')->user()->hasRole('administrator')) {
+        if(auth('api')->user() && auth('api')->user()->can('list players ranking')) {
             // obtenim llista de jugadors registrats amb els seus percentages d'èxit
             $players_ranking = PlayerRankingInfo::players_ranking();
 
@@ -40,7 +39,7 @@ class PlayerRankingController extends Controller
     
     public function show_average()
     {
-        if(auth('api')->user() && auth('api')->user()->hasRole('administrator')) {
+        if(auth('api')->user() && auth('api')->user()->can('show players ranking average')) {
             // obtenim el rànquing mitjà 
             $average_total_ranking = PlayerRankingInfo::average_ranking();
 
@@ -61,7 +60,7 @@ class PlayerRankingController extends Controller
     public function show_loser()
     {
         // obtenim el jugador registrat amb el pitjor percentatge d'èxit
-        if(auth('api')->user() && auth('api')->user()->hasRole('administrator')) {
+        if(auth('api')->user() && auth('api')->user()->can('show players ranking loser')) {
             
             return response()->json([
                 'success' => true,
@@ -80,7 +79,7 @@ class PlayerRankingController extends Controller
     public function show_winner()
     {
         // obtenim el jugador registrat amb el millor percentatge d'èxit
-        if(auth('api')->user() && auth('api')->user()->hasRole('administrator')) {
+        if(auth('api')->user() && auth('api')->user()->can('show players ranking winner')) {
             
             return response()->json([
                 'success' => true,
@@ -145,9 +144,7 @@ class PlayerRankingInfo
     public function players_ranking()
     {
         // obtenim els nicknames de tots els jugadors registrats al sistema, fent una consulta al model de dades dels usuaris
-        $players = User::whereHas('roles', function($query) {
-            $query->where('name','player');
-        })->get('nick_name');
+        $players = User::role('player')->get('nick_name');
         // definim un array (arreglo) associatiu buit per desar les dades del rànquing: nickname del jugador i el seu percentatge d'exit 
         $players_ranking = [];
         // establim la posició inicial de l'array (index = 0)
