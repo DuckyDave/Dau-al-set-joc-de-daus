@@ -143,8 +143,8 @@ class PlayerRankingInfo
     // obtenim el rànquing de jugadors registrats
     public function players_ranking()
     {
-        // obtenim els nicknames de tots els jugadors registrats al sistema, fent una consulta al model de dades dels usuaris
-        $players = User::role('player')->get('nick_name');
+        // obtenim les id's i els nicknames de tots els jugadors registrats al sistema, fent una consulta al model de dades dels usuaris
+        $players = User::role('player')->select('id','nick_name')->get();
         // definim un array (arreglo) associatiu buit per desar les dades del rànquing: nickname del jugador i el seu percentatge d'exit 
         $players_ranking = [];
         // establim la posició inicial de l'array (index = 0)
@@ -153,8 +153,10 @@ class PlayerRankingInfo
         foreach ($players as $player) {
             // desa el nickname del jugador
             $nick_name = $player->nick_name;
+            // desa la id del jugador
+            $id = $player->id;
             // desa el percentatge d'èxit corresponent a aquest jugador
-            $percentage = self::player_success_percentage($i + 1);
+            $percentage = self::player_success_percentage($id);
             // crea un objecte de la classe PlauerRankingInfo amb les dades anteriors i el desa a la posició actual de l'array
             $players_ranking[$i] = new PlayerRankingInfo($nick_name, $percentage);
             // avança a la següent posició de l'array
