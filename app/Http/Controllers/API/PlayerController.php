@@ -49,15 +49,12 @@ class PlayerController extends Controller
             $user->assignRole('player');
             $user->removeRole('administrator');
 
-            $token = $user->createToken('DAU AL SET Joc de daus Personal Access Token')->accessToken;
-
             return response()->json([
                 'sucess' => true,
                 'message' => 'Nou jugador '. $user->nick_name . ', registrat'
                 . ' correctament. Per continuar, has d\'entrar amb les teves'
                 . ' credencials (adreça de correu electrònic i contrasenya)'
                 . ' per generar un token vàlid',
-                'token' => $token,
             ], 200);
         } else {
             return response()->json([
